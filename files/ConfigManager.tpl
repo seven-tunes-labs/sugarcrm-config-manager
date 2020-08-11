@@ -85,7 +85,7 @@
                 </tr>
                 <tr>
                     <td width="10%" scope="row">
-                        Password - Special password required to update the field:
+                        Password - Special password required<br/>(check your installation package!):
                     </td>
                     <td>
                         <input type="password" name="updatePassword" id="updatePassword">

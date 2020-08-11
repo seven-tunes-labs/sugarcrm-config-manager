@@ -9,7 +9,9 @@ if(!defined('sugarEntry') || !sugarEntry) die('Not A Valid Entry Point');
 // =============================================================================
 
 // TODO - Update the keywords you don't want to show in the UI
-const CONFIG_KEYS_TO_SKIP=['pass', 'key'];
+const CONFIG_KEYS_TO_MASK=['pass', 'key'];
+const CONFIG_KEYS_TO_DENY_UPDATE=['pass', 'key', 'dbconfig'];
+
 // This password is used to validate if the request is valid. Change it!
 // This is just a basic check. Don't want to hardcode move it to sugar_config
 const CONFIG_MANAGER_PASSWORD='DzhC5YZi9qEtfML2';
@@ -37,7 +39,7 @@ function removePasswordKeys(&$arr)
     if (!empty($arr) && is_array($arr)) {
         // Remove password references
         foreach ($arr as $key => &$value) {
-            foreach (CONFIG_KEYS_TO_SKIP as $skip) {
+            foreach (CONFIG_KEYS_TO_MASK as $skip) {
                 if (strstr(strtolower($key), $skip)) {
                     $arr[$key] = '*******';
                 }
@@ -66,7 +68,7 @@ function displayConfig($path)
     removePasswordKeys($arr);
 
     if(!empty($arr) && !is_array($arr)) {
-        foreach (CONFIG_KEYS_TO_SKIP as $skip) {
+        foreach (CONFIG_KEYS_TO_MASK as $skip) {
             if (strstr(strtolower($path), $skip)) {
                 echo '*******';
                 return;
@@ -129,7 +131,7 @@ if ($reqType === "searchConfig") {
 function updateConfiguration($key, $value)
 {
     if(!empty($key)) {
-        foreach (CONFIG_KEYS_TO_SKIP as $skip) {
+        foreach (CONFIG_KEYS_TO_DENY_UPDATE as $skip) {
             if (strstr(strtolower($key), $skip)) {
                 echo 'Cannot update passwords or keys since it could cripple your system';
                 return;
@@ -164,6 +166,7 @@ function updateConfiguration($key, $value)
 
     $parentArr[$lastKey] = $value;
     $configuratorObj->saveConfig();
+    echo "Configuration Updated Successfully!";
 }
 
 // Display the template
