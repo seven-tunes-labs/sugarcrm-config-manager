@@ -36,7 +36,13 @@ Please feel free to modify this code to do an "Allow List" instead.
 ```php
 // TODO - Update the keywords you don't want to show in the UI
 const CONFIG_KEYS_TO_MASK=['pass', 'key'];
-const CONFIG_KEYS_TO_DENY_UPDATE=['pass', 'key', 'dbconfig'];
+
+// TODO - Allow only certain keys to be updated!
+const CONFIG_KEYS_TO_ALLOW_UPDATE=['internal_server_enabled', 'integration_server_url'];
+
+// Change it to deny list if needed
+// General deny list - db config, passwords or keys cannot be updated
+// const CONFIG_KEYS_TO_DENY_UPDATE=['pass', 'key', 'dbconfig'];
 
 // This password is used to validate if the request is valid. Change it!
 // This is just a basic check. Don't want to hardcode move it to sugar_config
