@@ -10,7 +10,13 @@ if(!defined('sugarEntry') || !sugarEntry) die('Not A Valid Entry Point');
 
 // TODO - Update the keywords you don't want to show in the UI
 const CONFIG_KEYS_TO_MASK=['pass', 'key'];
-const CONFIG_KEYS_TO_DENY_UPDATE=['pass', 'key', 'dbconfig'];
+
+// TODO - Allow only certain keys to be updated!
+const CONFIG_KEYS_TO_ALLOW_UPDATE=['internal_server_enabled', 'integration_server_url'];
+
+// Change it to deny list if needed
+// General deny list - db config, passwords or keys cannot be updated
+// const CONFIG_KEYS_TO_DENY_UPDATE=['pass', 'key', 'dbconfig'];
 
 // This password is used to validate if the request is valid. Change it!
 // This is just a basic check. Don't want to hardcode move it to sugar_config
@@ -130,14 +136,34 @@ if ($reqType === "searchConfig") {
 
 function updateConfiguration($key, $value)
 {
-    if(!empty($key)) {
-        foreach (CONFIG_KEYS_TO_DENY_UPDATE as $skip) {
-            if (strstr(strtolower($key), $skip)) {
-                echo 'Cannot update passwords or keys since it could cripple your system';
-                return;
-            }
+    if(empty($key) || empty($value)) {
+        echo "Key and value should be provided";
+        return;
+    }
+
+    // Allow List
+    $keyAllowed = false;
+    foreach (CONFIG_KEYS_TO_ALLOW_UPDATE as $allow) {
+        if ($key === $allow) {
+            $keyAllowed = true;
+            break;
         }
     }
+
+    if (!$keyAllowed) {
+        echo 'Updating this key is not allowed. Please update the package to allow this key to be updated!';
+        return;
+    }
+
+    // Deny List - use it as an alternative to deny certain updates
+    /*
+    foreach (CONFIG_KEYS_TO_DENY_UPDATE as $skip) {
+        if (strstr(strtolower($key), $skip)) {
+            echo 'Cannot update passwords or keys since it could cripple your system';
+            return;
+        }
+    }
+    */
 
     require_once 'modules/Configurator/Configurator.php';
     $configuratorObj = new Configurator();
