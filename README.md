@@ -15,9 +15,10 @@ By default, the code skips `pass` or `key` variables from display. You can confi
 ### Installation
 
 1. Create your own package by zipping up this folder, or use our Release - Change the default password in `files/ConfigManager.php` if needed.
-2. In your SugarCRM Instance, go to Module Loader -> Load package -> and then Install.
-3. Careful: Installation triggers Repair & Rebuild and might logout users.
-4. Once installed, refresh the page and navigate to Admin -> Config Manager!
+2. Change the ALLOW_LIST to allow only specific values - this is to ensure that the system is not affected by a mistake
+3. In your SugarCRM Instance, go to Module Loader -> Load package -> and then Install.
+4. Careful: Installation triggers Repair & Rebuild and might logout users.
+5. Once installed, refresh the page and navigate to Admin -> Config Manager!
 
 ---
 
